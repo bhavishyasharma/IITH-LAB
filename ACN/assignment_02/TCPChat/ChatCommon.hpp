@@ -1,0 +1,29 @@
+//
+// Created by Bhavishya Sharma on 30/09/20.
+//
+
+#ifndef IITH_LAB_CHATCOMMON_H
+#define IITH_LAB_CHATCOMMON_H
+
+#ifndef DEFAULT_CHAT_SERVER_IP
+#define DEFAULT_CHAT_SERVER_IP "127.0.0.1"
+#endif
+
+#ifndef DEFAULT_CHAT_SERVER_PORT
+#define DEFAULT_CHAT_SERVER_PORT 9090
+#endif
+
+#ifndef MAX_USERNAME_LENGTH
+#define MAX_USERNAME_LENGTH 128
+#endif
+
+#ifndef MAX_MESSAGE_LENGTH
+#define MAX_MESSAGE_LENGTH 4096
+#endif
+
+
+#ifndef MAX_CLIENT_THREADS
+#define MAX_CLIENT_THREADS 32
+#endif
+
+#endif //IITH_LAB_CHATCOMMON_H
