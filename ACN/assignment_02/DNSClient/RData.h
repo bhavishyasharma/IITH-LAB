@@ -60,36 +60,6 @@ public:
     void printSoaData();
 };
 
-class WksData : public RData {
-public:
-    u_int32_t address;
-    u_int8_t protocol;
-    unsigned char *bitmap;
-
-    u_int16_t size();
-    void serialize(unsigned char* bytes, u_int16_t length);
-    void deserialize(unsigned char* bytes, u_int16_t length);
-};
-
-class PtrData : public RData {
-public:
-    std::list<DNSLabel> ptrDName;
-
-    u_int16_t size();
-    u_int16_t serialize(unsigned char* bytes, u_int16_t offset);
-    u_int16_t deserialize(unsigned char* bytes, u_int16_t offset);
-};
-
-class HInfoData : public RData {
-public:
-    DNSLabel cpu;
-    DNSLabel os;
-
-    u_int16_t size();
-    u_int16_t serialize(unsigned char* bytes, u_int16_t offset);
-    u_int16_t deserialize(unsigned char* bytes, u_int16_t offset);
-};
-
 class MXData : public RData {
 public:
     u_int16_t preference;
@@ -118,16 +88,6 @@ public:
     u_int16_t serialize(unsigned char* bytes, u_int16_t offset);
     u_int16_t deserialize(unsigned char* bytes, u_int16_t offset);
     void printAAAAData();
-};
-
-class CAAData : public RData {
-public:
-    u_int8_t flags;
-    DNSLabel tag;
-    unsigned char *value;
-
-    u_int16_t serialize(unsigned char* bytes, u_int16_t offset, u_int16_t length);
-    u_int16_t deserialize(unsigned char* bytes, u_int16_t offset, u_int16_t length);
 };
 
 class UnsupportedData : public RData {

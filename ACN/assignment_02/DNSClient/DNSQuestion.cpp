@@ -23,9 +23,11 @@ DNSQuestion::DNSQuestion(std::string domainName, QType qType, QClass qClass) {
     this->init(domainName, qType, qClass);
 }
 
+// concert string into question object
 void DNSQuestion::init(std::string domainName, QType qType, QClass qClass) {
     char *domainNameString = new char[domainName.length()+1];
     memcpy(domainNameString, domainName.c_str(), domainName.length()+1);
+    // parse domain name as labels
     char *labelValue = strtok(domainNameString, ".");
     while(labelValue!=NULL){
         DNSLabel *label = new DNSLabel();
@@ -35,10 +37,12 @@ void DNSQuestion::init(std::string domainName, QType qType, QClass qClass) {
         this->qName.push_back(*label);
         labelValue = strtok(NULL, ".");
     }
+    // set question type & class
     this->qType = qType;
     this->qClass = qClass;
 }
 
+// calculate size for serialization
 u_int16_t DNSQuestion::size() {
     u_int16_t size = 5;
     for (std::list<DNSLabel>::iterator it=this->qName.begin(); it != this->qName.end(); ++it) {
@@ -47,6 +51,7 @@ u_int16_t DNSQuestion::size() {
     return size;
 }
 
+// convert object to bytes
 u_int16_t DNSQuestion::serialize(unsigned char *bytes, u_int16_t offset) {
     offset = DNSLabel::serializeFromList(&this->qName, bytes, offset);
     u_int16_t temp;
@@ -55,6 +60,7 @@ u_int16_t DNSQuestion::serialize(unsigned char *bytes, u_int16_t offset) {
     return offset + 4;
 }
 
+// parse bytes into question object
 u_int16_t DNSQuestion::deserialize(unsigned char *bytes, u_int16_t offset) {
     offset = DNSLabel::deserializeToList(&this->qName, bytes, offset);
     u_int16_t temp;
@@ -65,6 +71,7 @@ u_int16_t DNSQuestion::deserialize(unsigned char *bytes, u_int16_t offset) {
     return offset + 4;
 }
 
+// print question
 void DNSQuestion::printQuestion() {
     cout<<string (4, ' ')<<"Domain Name : "<<DNSLabel::getDomainNameFromList(&this->qName)<<endl;
     cout<<string (8, ' ')<<"QType : "<<this->qType<<" ("<<qTypeMap.at(this->qType)<<")"<<endl;

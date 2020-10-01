@@ -13,6 +13,7 @@ u_int16_t DNSHeader::size() {
     return 12;
 }
 
+// convert header object to bytes for socket
 u_int16_t DNSHeader::serialize(unsigned char *bytes, u_int16_t offset) {
     u_int16_t temp;
     memcpy(bytes + offset, &(temp = htons(this->id)), 2);
@@ -24,6 +25,7 @@ u_int16_t DNSHeader::serialize(unsigned char *bytes, u_int16_t offset) {
     return offset + 12;
 }
 
+// parse header from bytes
 u_int16_t DNSHeader::deserialize(unsigned char *bytes, u_int16_t offset) {
     u_int16_t temp;
     memcpy(&temp, bytes + offset, 2);
@@ -41,6 +43,7 @@ u_int16_t DNSHeader::deserialize(unsigned char *bytes, u_int16_t offset) {
     return offset + 12;
 }
 
+// print message header
 void DNSHeader::printHeader() {
     cout<<string (4, ' ') << "Transaction Id : "<<hex<<setw(4)<<uppercase<<this->id<<endl;
     cout<<string (4, ' ') << "Flags : "<<hex<<setw(4)<<uppercase<<this->flags<<endl;

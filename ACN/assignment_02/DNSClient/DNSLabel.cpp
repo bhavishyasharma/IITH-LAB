@@ -11,12 +11,14 @@ u_int16_t DNSLabel::size() {
     return this->length+1;
 }
 
+// convert label to bytes
 u_int16_t DNSLabel::serialize(unsigned char *bytes, u_int16_t offset) {
     memcpy(bytes + offset, &this->length, 1);
     memcpy(bytes + offset + 1, this->value, this->length);
     return offset + this->length + 1;
 }
 
+// parse label from bytes
 u_int16_t DNSLabel::deserialize(unsigned char *bytes, u_int16_t offset) {
     memcpy(&this->length, bytes + offset, 1);
     this->value = new unsigned char [this->length + 1];
@@ -25,6 +27,7 @@ u_int16_t DNSLabel::deserialize(unsigned char *bytes, u_int16_t offset) {
     return offset + this->length + 1;
 }
 
+// convert list of labels to domainname string
 std::string DNSLabel::getDomainNameFromList(std::list <DNSLabel> *labels) {
     std::string domainName = "";
     const char delimiter = '.';
@@ -36,12 +39,14 @@ std::string DNSLabel::getDomainNameFromList(std::list <DNSLabel> *labels) {
     return domainName;
 }
 
+// convert bytes to list of labels (also decompress if compressed)
 u_int16_t DNSLabel::deserializeToList(std::list<DNSLabel> *labels, unsigned char *bytes, u_int16_t offset) {
     while(bytes[offset] != '\0' && (bytes[offset]>>6) != 3){
         DNSLabel *label = new DNSLabel();
         offset = label->deserialize(bytes, offset);
         labels->push_back(*label);
     }
+    // label is compressed, try to decompress
     if((bytes[offset]>>6) == 3){
         u_int16_t pointerOffset;
         memcpy(&pointerOffset, bytes + offset, 2);
@@ -56,6 +61,7 @@ u_int16_t DNSLabel::deserializeToList(std::list<DNSLabel> *labels, unsigned char
     return offset;
 }
 
+// parse list of labels from bytes
 u_int16_t DNSLabel::serializeFromList(std::list <DNSLabel> *labels, unsigned char *bytes, u_int16_t offset) {
     for (std::list<DNSLabel>::iterator it=labels->begin(); it != labels->end(); ++it) {
         offset = it->serialize(bytes, offset);

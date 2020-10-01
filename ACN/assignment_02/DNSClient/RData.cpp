@@ -127,36 +127,6 @@ void SoaData::printSoaData() {
     cout<<string (12, ' ')<<"Minimum : "<<this->minimum<<endl;
 }
 
-u_int16_t PtrData::size() {
-    u_int16_t size = 10;
-    for (std::list<DNSLabel>::iterator it=this->ptrDName.begin(); it != this->ptrDName.end(); ++it) {
-        size += it->size();
-    }
-    return size;
-}
-
-u_int16_t PtrData::deserialize(unsigned char *bytes, u_int16_t offset) {
-    return DNSLabel::deserializeToList(&this->ptrDName, bytes, offset);
-}
-
-u_int16_t PtrData::serialize(unsigned char *bytes, u_int16_t offset) {
-    return DNSLabel::serializeFromList(&this->ptrDName, bytes, offset);
-}
-
-u_int16_t HInfoData::size() {
-    return cpu.size() + os.size();
-}
-
-u_int16_t HInfoData::deserialize(unsigned char *bytes, u_int16_t offset) {
-    offset = this->cpu.deserialize(bytes, offset);
-    return this->os.deserialize(bytes, offset);
-}
-
-u_int16_t HInfoData::serialize(unsigned char *bytes, u_int16_t offset) {
-    offset = this->cpu.serialize(bytes, offset);
-    return this->os.serialize(bytes, offset);
-}
-
 u_int16_t MXData::size() {
     u_int16_t size = 10;
     for (std::list<DNSLabel>::iterator it=this->exchange.begin(); it != this->exchange.end(); ++it) {
@@ -225,23 +195,6 @@ void AAAAData::printAAAAData() {
     char *buffer = new char [17];
     inet_ntop(AF_INET6, &this->address, buffer, 46);
     cout<<string (12, ' ')<<"Address : "<<buffer<<endl;
-}
-
-u_int16_t CAAData::deserialize(unsigned char *bytes, u_int16_t offset, u_int16_t length) {
-    memcpy(&this->flags, bytes + offset++, 1);
-    offset = this->tag.deserialize(bytes, offset);
-    u_int16_t valueLength = length - this->tag.size() - 1;
-    this->value = new unsigned char [valueLength];
-    memcpy(&this->value, bytes + offset, valueLength);
-    return offset + valueLength;
-}
-
-u_int16_t CAAData::serialize(unsigned char *bytes, u_int16_t offset, u_int16_t length) {
-    memcpy(bytes + offset++, &this->flags, 1);
-    offset = this->tag.serialize(bytes, offset);
-    u_int16_t valueLength = length - this->tag.size() - 1;
-    memcpy(bytes + offset, &this->value, valueLength);
-    return offset + valueLength;
 }
 
 u_int16_t UnsupportedData::deserialize(unsigned char *bytes, u_int16_t offset, u_int16_t length) {

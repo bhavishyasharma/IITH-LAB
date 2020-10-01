@@ -39,24 +39,34 @@ void DNSClient::query(std::string domainName) {
 }
 
 void DNSClient::query(std::string domainName, QType qType, QClass qClass) {
+    // Create socket
     if((this->socketFD = socket(PF_INET, SOCK_DGRAM, 0)) < 0) {
         std::cerr<<"Failed: Error creating socket.";
         throw std::runtime_error("Failed: Error creating socket.");
     }
+
+    // Create message
     DNSMessage *message = new DNSMessage();
+    // Set query headers
     message->setQueryHeaders();
+    // add question to message
     message->addQuery(domainName, qType, qClass);
+
+    // serialize message
     int messageSize = message->size();
     unsigned char * buffer = new unsigned char [message->size()];
     message->serialize(buffer);
-    for(int i=0; i<messageSize; ++i)
-        std::cout<< std::setfill('0')<< std::hex <<std::setw(2)<< (int)buffer[i]<<" ";
-    std::cout<<std::endl;
+
+    // print query message
     message->printMessage();
+
+    // send message
     if (sendto(this->socketFD, buffer, messageSize, 0,( struct sockaddr *) &(this->serverAddress), sizeof(this->serverAddress)) != messageSize) {
         std::cerr<<"Failed: Error sending message to server.";
         throw std::runtime_error("Failed: Error sending message to server.");
     }
+
+    // receive message
     unsigned char *recBuffer = new unsigned char[DNS_BUFFER_SIZE];
     this->serverLen = sizeof(this->serverAddress);
     if ((messageSize = recvfrom(this->socketFD, recBuffer, DNS_BUFFER_SIZE, 0, ( struct sockaddr *) &(this->serverAddress), &(this->serverLen))) < 0) {
@@ -64,16 +74,11 @@ void DNSClient::query(std::string domainName, QType qType, QClass qClass) {
         throw std::runtime_error("Failed: Error receiving message from server.");
     }
     else{
-        for(int i=0; i<messageSize; ++i)
-            std::cout<< std::setfill('0')<< std::hex <<std::setw(2)<< (int)recBuffer[i]<<" ";
-        std::cout<<std::endl;
+        // deserialize response message
         message = new DNSMessage();
         message->deserialize(recBuffer);
+
+        // print response
         message->printMessage();
-        unsigned char *newBuffer = new unsigned char [message->size()];
-        message->serialize(newBuffer);
-        DNSMessage *newMessage = new DNSMessage();
-        newMessage->deserialize(newBuffer);
-        newMessage->printMessage();
     }
 }

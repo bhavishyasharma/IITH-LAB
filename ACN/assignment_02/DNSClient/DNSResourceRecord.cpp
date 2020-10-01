@@ -11,6 +11,7 @@
 
 using namespace std;
 
+// calculate size of resource record for serialising
 u_int16_t DNSResourceRecord::size() {
     u_int16_t size = 10;
     for (std::list<DNSLabel>::iterator it=this->name.begin(); it != this->name.end(); ++it) {
@@ -55,6 +56,7 @@ u_int16_t DNSResourceRecord::size() {
     return size;
 }
 
+// parse bytes into resourse record
 u_int16_t DNSResourceRecord::deserialize(unsigned char *bytes, u_int16_t offset) {
     offset = DNSLabel::deserializeToList(&this->name, bytes, offset);
     u_int16_t temp;
@@ -120,6 +122,8 @@ u_int16_t DNSResourceRecord::deserialize(unsigned char *bytes, u_int16_t offset)
     }
     return offset;
 }
+
+// convert resouse record into bytes
 u_int16_t DNSResourceRecord::serialize(unsigned char *bytes, u_int16_t offset) {
     offset = DNSLabel::serializeFromList(&this->name, bytes, offset);
     u_int16_t temp;
