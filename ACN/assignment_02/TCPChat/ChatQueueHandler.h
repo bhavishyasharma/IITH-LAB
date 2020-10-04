@@ -18,9 +18,10 @@ class ChatQueueHandler {
 private:
     std::list<ChatMessage*> *messageQueue;
     std::map<int, ChatClientHandler*> *clientHandlers;
+    pthread_mutex_t *queueMutex;
 
 public:
-    ChatQueueHandler(std::list<ChatMessage*> *queue, std::map<int, ChatClientHandler*> *handlers);
+    ChatQueueHandler(std::list<ChatMessage*> *queue, std::map<int, ChatClientHandler*> *handlers, pthread_mutex_t *queueMutex);
     void* forwardMessage(ChatMessage *message);
     void* watchQueue();
     static void* threadRunner(void *handler);

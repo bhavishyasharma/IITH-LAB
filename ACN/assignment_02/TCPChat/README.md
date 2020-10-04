@@ -5,6 +5,16 @@
 The server accepts max N connections at a time and maintains a backlog of N clients.
 If the server thread queue is full, the client waits and "Waiting in queue" is displayed on top.
 
+Server Threads
+- Main Thread - Accept Client Connections, creates a list of connected clients
+- ClientHandler Thread - per client thread for receiving messages. Each message received is pushed back to shared queue.
+- QueueHandler Thread - Watches queue for any messages. If a message is in the queue, it is poped and forwarded to each connected client.
+- ClientThread Handler Thread - watches the list of connected clients and frees the client thread if the client has finished.
+
+Client Threads
+- Main Thread - Read input from user and send message to server.
+- Receiving Thread - Continuously receive messages from server.
+
 ##### Build Instructions
 
 ```

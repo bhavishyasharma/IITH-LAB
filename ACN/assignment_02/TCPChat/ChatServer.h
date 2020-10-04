@@ -39,6 +39,7 @@ private:
     // queue handler (checks queue for message & forwards to call clients)
     ChatQueueHandler *queueHandler;
     pthread_t *queueThread;
+    pthread_mutex_t* queueMutex;
 
     // Reclaims finished clienthandlers
     ChatClientThreadHandler *clientThreadHandler;

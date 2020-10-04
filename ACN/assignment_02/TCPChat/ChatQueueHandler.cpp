@@ -4,9 +4,10 @@
 
 #include "ChatQueueHandler.h"
 
-ChatQueueHandler::ChatQueueHandler(std::list<ChatMessage *> *queue, std::map<int, ChatClientHandler *> *handlers) {
+ChatQueueHandler::ChatQueueHandler(std::list<ChatMessage *> *queue, std::map<int, ChatClientHandler *> *handlers, pthread_mutex_t* queueMutex) {
     this->messageQueue = queue;
     this->clientHandlers = handlers;
+    this->queueMutex = queueMutex;
 }
 
 void * ChatQueueHandler::forwardMessage(ChatMessage *message) {
@@ -38,7 +39,9 @@ void * ChatQueueHandler::watchQueue() {
         else {
             // remove message from queue and forward to all clients
             ChatMessage *message = this->messageQueue->front();
+            pthread_mutex_lock(queueMutex);
             this->messageQueue->pop_front();
+            pthread_mutex_unlock(queueMutex);
             this->forwardMessage(message);
         }
     }

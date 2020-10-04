@@ -43,6 +43,7 @@ void ChatServer::init(std::string serverIP, u_int16_t port, int clientCount) {
     this->clientHandlers = new std::map<int, ChatClientHandler*>();
     this->messageQueue = new std::list<ChatMessage*>();
     this->maxClientThreadCount = clientCount;
+    this->queueMutex = new pthread_mutex_t ();
 
     // create server socket
     if((this->serverSocketFD = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
@@ -70,7 +71,7 @@ void ChatServer::startServer() {
     std::cout<<"Listening on "<<inet_ntoa(this->serverAddress->sin_addr)<<":"<<ntohs(this->serverAddress->sin_port)<<std::endl;
 
     // Create queue handler & run it on different thread
-    this->queueHandler = new ChatQueueHandler(this->messageQueue, this->clientHandlers);
+    this->queueHandler = new ChatQueueHandler(this->messageQueue, this->clientHandlers, this->queueMutex);
     this->queueThread = new pthread_t ();
     if(pthread_create(this->queueThread, NULL, ChatQueueHandler::threadRunner, this->queueHandler) == 0) {
 
@@ -106,7 +107,7 @@ void ChatServer::startServer() {
                 // create thread & handler to read further data from client
                 pthread_t *clientThread = new pthread_t();
                 ChatClientHandler *clientHandler = new ChatClientHandler(username, clientSocketFD, clientAddress,
-                                                                         this->messageQueue);
+                                                                         this->messageQueue, this->queueMutex);
                 if (pthread_create(clientThread, NULL, ChatClientHandler::threadRunner, clientHandler) == 0) {
 
                     // add thead and handler to list

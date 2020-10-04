@@ -23,7 +23,10 @@ public:
     unsigned char* username;
     // 0 - Created, 1 - Working, -1 - Finished
     int threadStatus;
-    ChatClientHandler(unsigned char* username, int socketFD, sockaddr_in *client, std::list<ChatMessage*> *queue);
+
+    pthread_mutex_t* queueMutex;
+
+    ChatClientHandler(unsigned char* username, int socketFD, sockaddr_in *client, std::list<ChatMessage*> *queue, pthread_mutex_t* queueMutex);
     // Receive messages from client
     void* receiveMessage();
     // Thread runner for receiveMessage

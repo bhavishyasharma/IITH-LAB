@@ -8,12 +8,13 @@
 #include "ChatCommon.hpp"
 #include <unistd.h>
 
-ChatClientHandler::ChatClientHandler(unsigned char* username, int socketFD, sockaddr_in *client, std::list <ChatMessage*> *queue) {
+ChatClientHandler::ChatClientHandler(unsigned char* username, int socketFD, sockaddr_in *client, std::list <ChatMessage*> *queue, pthread_mutex_t* queueMutex) {
     this->username = username;
     this->clientSocketFD = socketFD;
     this->clientAddress = client;
     this->messageQueue = queue;
     this->threadStatus = 0;
+    this->queueMutex = queueMutex;
 }
 
 void * ChatClientHandler::receiveMessage() {
@@ -29,7 +30,9 @@ void * ChatClientHandler::receiveMessage() {
 
     // Send joining message to all clients
     ChatMessage* message = new ChatMessage(serverUser, joinMessage);
+    pthread_mutex_lock(this->queueMutex);
     this->messageQueue->push_back(message);
+    pthread_mutex_unlock(this->queueMutex);
 
     unsigned char *buffer = new unsigned char[MAX_MESSAGE_LENGTH];
     int messageSize = 1;
@@ -47,7 +50,12 @@ void * ChatClientHandler::receiveMessage() {
             message->socketFD = clientSocketFD;
 
             // send message to queue
+            pthread_mutex_lock(queueMutex);
             this->messageQueue->push_back(message);
+            pthread_mutex_unlock(queueMutex);
+            if(strcmp((char*)message->data, "bye") == 0){
+                break;
+            }
 
             // clear buffer
             memset(buffer, 0, messageSize);
@@ -61,7 +69,9 @@ void * ChatClientHandler::receiveMessage() {
     // send leaving message to all clients
     message = new ChatMessage(serverUser, leaveMessage);
     message->socketFD = this->clientSocketFD;
+    pthread_mutex_lock(this->queueMutex);
     this->messageQueue->push_back(message);
+    pthread_mutex_unlock(this->queueMutex);
     return 0;
 }
 
