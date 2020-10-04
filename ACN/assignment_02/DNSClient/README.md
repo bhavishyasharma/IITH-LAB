@@ -14,11 +14,11 @@ make
 
 `./ChatClient -s 192.168.35.52 -p 53 -d dns1.iith.ac.in -t ANY -c IN`
 Parameters: 
-- -s server ip address
-- -p server port
-- -d domain name
-- -t DNS QType
-- -c DNS QClass
+- -s server ip address (Default: 8.8.8.8)
+- -p server port (Default: 53)
+- -d domain name (Default: www.google.com)
+- -t DNS QType (Default: A)
+- -c DNS QClass (Default: IN)
 
 ![DNS Client](./screenshot/dns_client.png?raw=true "DNS Client")
 
