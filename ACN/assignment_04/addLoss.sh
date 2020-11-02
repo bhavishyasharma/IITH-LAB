@@ -1,0 +1,1 @@
+tc qdisc change dev lo root netem loss 2%

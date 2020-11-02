@@ -6,7 +6,9 @@
 #define IITH_LAB_DNSRESOURCERECORD_H
 
 #include <string>
+#include <cstring>
 #include <sys/types.h>
+#include <arpa/inet.h>
 
 #include "DNSLabel.h"
 #include "RData.h"

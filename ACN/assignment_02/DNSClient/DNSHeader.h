@@ -6,7 +6,10 @@
 #define IITH_LAB_DNSHEADER_H
 
 #include <string>
+#include <cstring>
+#include <bitset>
 #include <sys/types.h>
+#include <arpa/inet.h>
 
 class DNSHeader {
 public:

@@ -7,6 +7,8 @@
 
 #include <sys/types.h>
 #include <string>
+#include <cstring>
+#include <arpa/inet.h>
 
 #include "ChatCommon.hpp"
 

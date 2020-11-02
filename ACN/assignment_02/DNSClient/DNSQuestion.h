@@ -6,8 +6,10 @@
 #define IITH_LAB_DNSQUESTION_H
 
 #include <string>
+#include <cstring>
 #include <list>
 #include <iterator>
+#include <arpa/inet.h>
 
 #include "DNSLabel.h"
 #include "QClass.hpp"

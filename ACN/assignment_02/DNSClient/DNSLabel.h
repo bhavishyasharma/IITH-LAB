@@ -5,8 +5,11 @@
 #ifndef IITH_LAB_DNSLABEL_H
 #define IITH_LAB_DNSLABEL_H
 
+#include <cstring>
 #include <list>
 #include <sys/types.h>
+#include <string>
+#include <arpa/inet.h>
 
 class DNSLabel {
 public:
