@@ -1,0 +1,37 @@
+Wifi        Rate Control    Distance    AC_BE (0ms)     AC_BE(3.008ms)  AC_VI(3.008ms)  AC_VI(0ms)
+802.11a     Ideal           10m         28.87 Mbps      36.43 Mbps      36.96 Mbps      32.50 Mbps
+802.11a     Minstrel        10m         28.37 Mbps      35.13 Mbps      36.52 Mbps      31.76 Mbps
+802.11a     Arf             10m         28.71 Mbps      36.10 Mbps      36.63 Mbps      32.22 Mbps
+
+802.11a     Ideal           50m         13.54 Mbps      14.61 Mbps      14.88 Mbps      14.30 Mbps
+802.11a     Minstrel        50m         11.99 Mbps      12.76 Mbps      13.25 Mbps      12.80 Mbps
+802.11a     Arf             50m         12.37 Mbps      13.33 Mbps      12.65 Mbps      13.14 Mbps
+
+802.11g     Ideal           10m         28.63 Mbps      36.14 Mbps      36.67 Mbps      32.24 Mbps
+802.11g     Minstrel        10m         27.17 Mbps      0 Mbps          12.83 Mbps      30.34 Mbps
+802.11g     Arf             10m         27.20 Mbps      0 Mbps          0 Mbps          30.63 Mbps
+
+802.11g     Ideal           50m         13.43 Mbps      14.50 Mbps      14.76 Mbps      14.16 Mbps
+802.11g     Minstrel        50m         11.05 Mbps      0 Mbps          0 Mbps          12.63 Mbps
+802.11g     Arf             50m         11.83 Mbps      0 Mbps          0 Mbps          12.56 Mbps
+
+802.11n     Ideal           10m         59.48 Mbps      57.80 Mbps      58.61 Mbps      60.06 Mbps
+802.11n     MinstrelHT      10m         58.91 Mbps      56.86 Mbps      57.70 Mbps      58.77 Mbps
+802.11n     Arf             10m         No ArfHT Implementation Available
+
+802.11n     Ideal           50m         17.79 Mbps      17.12 Mbps      17.39 Mbps      17.95 Mbps
+802.11n     MinstrelHT      50m         15.53 Mbps      15.21 Mbps      15.96 Mbps      16.92 Mbps
+802.11n     Arf             50m         No ArfHT Implementtation Available
+
+Analysis:   For Wifi 802.11a, data rates increased significantly when TXOP was set to 3ms for all 3
+            control modes. For Best Effort it increased roughly 25% at 10m and 7% for 50m distance.
+            For Video traffic, speed increase was slighyl less at roughly 14% and 4%.
+
+            For Wifi 802.11g, data rates increased for Ideal control mode when TXOP was set to 3ms
+            While they reduced and even reached 0 for Minstrel and Arf control mode when TXOP was
+            enabled for both 10 & 50m distance. This was an anomally and could have happened due to
+            interference.
+
+            For Wifi 802.11n, data dates were not effected much by using TXOP. They even dropped
+            slightly for both Ideal and Minstel. Wifi 11n uses differenct optimizations to get 
+            better speeds, thus TXOP did not have much effect.

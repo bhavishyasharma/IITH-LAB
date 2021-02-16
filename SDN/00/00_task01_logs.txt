@@ -1,0 +1,299 @@
+mininet@mininet16:~$ sudo wireshark &
+[1] 15038
+mininet@mininet16:~$ 
+(process:15039): Gtk-WARNING **: Locale not supported by C library.
+	Using the fallback 'C' locale.
+Fontconfig warning: ignoring UTF-8: not a valid region tag
+
+mininet@mininet16:~$ sudo mn
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Starting CLI:
+mininet> help
+
+Documented commands (type help <topic>):
+========================================
+EOF    gterm  iperfudp  nodes        pingpair      py      switch
+dpctl  help   link      noecho       pingpairfull  quit    time  
+dump   intfs  links     pingall      ports         sh      x     
+exit   iperf  net       pingallfull  px            source  xterm 
+
+You may also send a command to a node using:
+  <node> command {args}
+For example:
+  mininet> h1 ifconfig
+
+The interpreter automatically substitutes IP addresses
+for node names when a node is the first arg, so commands
+like
+  mininet> h2 ping h3
+should work.
+
+Some character-oriented interactive commands require
+noecho:
+  mininet> noecho h2 vi foo.py
+However, starting up an xterm/gterm is generally better:
+  mininet> xterm h2
+
+mininet> nodes
+available nodes are: 
+c0 h1 h2 s1
+mininet> net
+h1 h1-eth0:s1-eth1
+h2 h2-eth0:s1-eth2
+s1 lo:  s1-eth1:h1-eth0 s1-eth2:h2-eth0
+c0
+mininet> dump
+<Host h1: h1-eth0:10.0.0.1 pid=15093> 
+<Host h2: h2-eth0:10.0.0.2 pid=15095> 
+<OVSSwitch s1: lo:127.0.0.1,s1-eth1:None,s1-eth2:None pid=15100> 
+<Controller c0: 127.0.0.1:6653 pid=15086> 
+mininet> h1 ifconfig -a
+h1-eth0   Link encap:Ethernet  HWaddr 4a:70:3b:6b:bd:95  
+          inet addr:10.0.0.1  Bcast:10.255.255.255  Mask:255.0.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+mininet> s1 ifconfig -a
+eth0      Link encap:Ethernet  HWaddr 52:54:00:2f:a1:c5  
+          inet addr:192.168.51.16  Bcast:192.168.51.255  Mask:255.255.254.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:149310 errors:314 dropped:25 overruns:0 frame:314
+          TX packets:61250 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:137503384 (137.5 MB)  TX bytes:33823045 (33.8 MB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:42947 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:42947 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:47677436 (47.6 MB)  TX bytes:47677436 (47.6 MB)
+
+ovs-system Link encap:Ethernet  HWaddr 1a:53:e4:fe:67:6e  
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+s1        Link encap:Ethernet  HWaddr 36:f9:5e:44:dd:4a  
+          UP BROADCAST RUNNING  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+s1-eth1   Link encap:Ethernet  HWaddr 0e:f9:4a:0a:69:2b  
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+s1-eth2   Link encap:Ethernet  HWaddr 42:9d:4d:19:41:c4  
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+mininet> h1 ps -a
+  PID TTY          TIME CMD
+15038 pts/0    00:00:00 sudo
+15039 pts/0    00:00:02 wireshark
+15047 pts/0    00:00:00 dbus-launch
+15079 pts/0    00:00:00 dumpcap
+15080 pts/0    00:00:00 sudo
+15081 pts/0    00:00:00 mn
+15148 pts/1    00:00:00 controller
+15196 pts/3    00:00:00 ps
+mininet> s1 ps -a
+  PID TTY          TIME CMD
+15038 pts/0    00:00:00 sudo
+15039 pts/0    00:00:02 wireshark
+15047 pts/0    00:00:00 dbus-launch
+15079 pts/0    00:00:00 dumpcap
+15080 pts/0    00:00:00 sudo
+15081 pts/0    00:00:00 mn
+15148 pts/1    00:00:00 controller
+15198 pts/5    00:00:00 ps
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=3.13 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 3.136/3.136/3.136/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=1.40 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.404/1.404/1.404/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=1.07 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.075/1.075/1.075/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.246 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.246/0.246/0.246/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.059 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.059/0.059/0.059/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.036 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.036/0.036/0.036/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.020 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.020/0.020/0.020/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.022 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.022/0.022/0.022/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.060 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.060/0.060/0.060/0.000 ms
+mininet> h1 ping -c 1 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.035 ms
+
+--- 10.0.0.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.035/0.035/0.035/0.000 ms
+mininet> pingall
+*** Ping: testing ping reachability
+h1 -> h2 
+h2 -> h1 
+*** Results: 0% dropped (2/2 received)
+mininet> h1 python -m SimpleHTTPServer 80 &
+mininet> h2 wget -O - h1
+--2020-11-23 10:27:51--  http://10.0.0.1/
+Connecting to 10.0.0.1:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 942 [text/html]
+Saving to: 'STDOUT'
+
+ 0% [                                       ] 0           --.-K/s              <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
+<title>Directory listing for /</title>
+<body>
+<h2>Directory listing for /</h2>
+<hr>
+<ul>
+<li><a href=".bash_history">.bash_history</a>
+<li><a href=".bash_logout">.bash_logout</a>
+<li><a href=".bashrc">.bashrc</a>
+<li><a href=".cache/">.cache/</a>
+<li><a href=".dbus/">.dbus/</a>
+<li><a href=".gitconfig">.gitconfig</a>
+<li><a href=".mininet_history">.mininet_history</a>
+<li><a href=".profile">.profile</a>
+<li><a href=".rnd">.rnd</a>
+<li><a href=".ssh/">.ssh/</a>
+<li><a href=".viminfo">.viminfo</a>
+<li><a href=".wireshark/">.wireshark/</a>
+<li><a href=".Xauthority">.Xauthority</a>
+<li><a href="install-mininet-vm.sh">install-mininet-vm.sh</a>
+<li><a href="loxigen/">loxigen/</a>
+<li><a href="mininet/">mininet/</a>
+<li><a href="oflops/">oflops/</a>
+<li><a href="oftest/">oftest/</a>
+<li><a href="openflow/">openflow/</a>
+<li><a href="pox/">pox/</a>
+</ul>
+<hr>
+</body>
+</html>
+100%[======================================>] 942         --.-K/s   in 0s      
+
+2020-11-23 10:27:51 (141 MB/s) - written to stdout [942/942]
+
+mininet> h1 kill %python
+Serving HTTP on 0.0.0.0 port 80 ...
+10.0.0.2 - - [23/Nov/2020 10:27:51] "GET / HTTP/1.1" 200 -
+mininet> exit
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 208.423 seconds
+mininet@mininet16:~$ sudo mn -c
+*** Removing excess controllers/ofprotocols/ofdatapaths/pings/noxes
+killall controller ofprotocol ofdatapath ping nox_core lt-nox_core ovs-openflowd ovs-controller udpbwtest mnexec ivs 2> /dev/null
+killall -9 controller ofprotocol ofdatapath ping nox_core lt-nox_core ovs-openflowd ovs-controller udpbwtest mnexec ivs 2> /dev/null
+pkill -9 -f "sudo mnexec"
+*** Removing junk from /tmp
+rm -f /tmp/vconn* /tmp/vlogs* /tmp/*.out /tmp/*.log
+*** Removing old X11 tunnels
+*** Removing excess kernel datapaths
+ps ax | egrep -o 'dp[0-9]+' | sed 's/dp/nl:/'
+***  Removing OVS datapaths
+ovs-vsctl --timeout=1 list-br
+ovs-vsctl --timeout=1 list-br
+*** Removing all links of the pattern foo-ethX
+ip link show | egrep -o '([-_.[:alnum:]]+-eth[[:digit:]]+)'
+ip link show
+*** Killing stale mininet node processes
+pkill -9 -f mininet:
+*** Shutting down stale tunnels
+pkill -9 -f Tunnel=Ethernet
+pkill -9 -f .ssh/mn
+rm -f ~/.ssh/mn/*
+*** Cleanup complete.
+mininet@mininet16:~$ 

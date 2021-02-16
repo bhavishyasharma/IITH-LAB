@@ -1,0 +1,400 @@
+mininet@mininet16:~$ sudo mn --test pingpair
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Waiting for switches to connect
+s1 
+h1 -> h2 
+h2 -> h1 
+*** Results: 0% dropped (2/2 received)
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 5.321 seconds
+mininet@mininet16:~$ sudo mn --test iperf
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Waiting for switches to connect
+s1 
+*** Iperf: testing TCP bandwidth between h1 and h2 
+.*** Results: ['32.9 Gbits/sec', '32.9 Gbits/sec']
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 10.873 seconds
+mininet@mininet16:~$ sudo mn --test pingall --topo single,3
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 h3 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) (h3, s1) 
+*** Configuring hosts
+h1 h2 h3 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Waiting for switches to connect
+s1 
+*** Ping: testing ping reachability
+h1 -> h2 h3 
+h2 -> h1 h3 
+h3 -> h1 h2 
+*** Results: 0% dropped (6/6 received)
+*** Stopping 1 controllers
+c0 
+*** Stopping 3 links
+...
+*** Stopping 1 switches
+s1 
+*** Stopping 3 hosts
+h1 h2 h3 
+*** Done
+completed in 5.391 seconds
+mininet@mininet16:~$ sudo mn --test pingall --topo linear,4
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 h3 h4 
+*** Adding switches:
+s1 s2 s3 s4 
+*** Adding links:
+(h1, s1) (h2, s2) (h3, s3) (h4, s4) (s2, s1) (s3, s2) (s4, s3) 
+*** Configuring hosts
+h1 h2 h3 h4 
+*** Starting controller
+c0 
+*** Starting 4 switches
+s1 s2 s3 s4 ...
+*** Waiting for switches to connect
+s1 s2 s3 s4 
+*** Ping: testing ping reachability
+h1 -> h2 h3 h4 
+h2 -> h1 h3 h4 
+h3 -> h1 h2 h4 
+h4 -> h1 h2 h3 
+*** Results: 0% dropped (12/12 received)
+*** Stopping 1 controllers
+c0 
+*** Stopping 7 links
+.......
+*** Stopping 4 switches
+s1 s2 s3 s4 
+*** Stopping 4 hosts
+h1 h2 h3 h4 
+*** Done
+completed in 5.984 seconds
+mininet@mininet16:~$ sudo mn --link tc,bw=10,delay=10ms
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(10.00Mbit 10ms delay) (10.00Mbit 10ms delay) (h1, s1) (10.00Mbit 10ms delay) (10.00Mbit 10ms delay) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...(10.00Mbit 10ms delay) (10.00Mbit 10ms delay) 
+*** Starting CLI:
+mininet> iperf
+*** Iperf: testing TCP bandwidth between h1 and h2 
+*** Results: ['9.48 Mbits/sec', '12.0 Mbits/sec']
+mininet> h1 ping -c10 h2
+PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=42.3 ms
+64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=40.6 ms
+64 bytes from 10.0.0.2: icmp_seq=3 ttl=64 time=40.4 ms
+64 bytes from 10.0.0.2: icmp_seq=4 ttl=64 time=40.3 ms
+64 bytes from 10.0.0.2: icmp_seq=5 ttl=64 time=40.4 ms
+64 bytes from 10.0.0.2: icmp_seq=6 ttl=64 time=40.4 ms
+64 bytes from 10.0.0.2: icmp_seq=7 ttl=64 time=40.7 ms
+64 bytes from 10.0.0.2: icmp_seq=8 ttl=64 time=40.4 ms
+64 bytes from 10.0.0.2: icmp_seq=9 ttl=64 time=40.3 ms
+64 bytes from 10.0.0.2: icmp_seq=10 ttl=64 time=40.3 ms
+
+--- 10.0.0.2 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9016ms
+rtt min/avg/max/mdev = 40.338/40.650/42.350/0.614 ms
+mininet> exit
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 109.982 seconds
+mininet@mininet16:~$ cd assignments/
+mininet@mininet16:~/assignments$ cp ../mininet/custom/topo-2sw-2host.py ./
+cp: cannot create regular file './topo-2sw-2host.py': Permission denied
+mininet@mininet16:~/assignments$ sudo cp ../mininet/custom/topo-2sw-2host.py ./
+mininet@mininet16:~/assignments$ ls
+00_task01.pcapng  topo-2sw-2host.py
+mininet@mininet16:~/assignments$ nano topo-2sw-2host.py 
+mininet@mininet16:~/assignments$ sudo mn --custom ./topo-2sw-2host.py --topo mytopo --test pingall
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s3 s4 
+*** Adding links:
+(h1, s3) (s3, s4) (s4, h2) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 2 switches
+s3 s4 ...
+*** Waiting for switches to connect
+s3 s4 
+*** Ping: testing ping reachability
+h1 -> h2 
+h2 -> h1 
+*** Results: 0% dropped (2/2 received)
+*** Stopping 1 controllers
+c0 
+*** Stopping 3 links
+...
+*** Stopping 2 switches
+s3 s4 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 5.548 seconds
+mininet@mininet16:~/assignments$ sudo mn --mac
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Starting CLI:
+mininet> he ifconfig
+*** Unknown command: he ifconfig
+mininet> h1 ifconfig
+h1-eth0   Link encap:Ethernet  HWaddr 00:00:00:00:00:01  
+          inet addr:10.0.0.1  Bcast:10.255.255.255  Mask:255.0.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+mininet> exit
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 13.157 seconds
+mininet@mininet16:~/assignments$ sudo mn -x
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Running terms on localhost:10.0
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Starting CLI:
+mininet> exit
+*** Stopping 1 controllers
+c0 
+*** Stopping 8 terms
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 201.475 seconds
+mininet@mininet16:~/assignments$ sudo mn --switch user --test iperf
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 
+*** Waiting for switches to connect
+s1 
+*** Iperf: testing TCP bandwidth between h1 and h2 
+*** Results: ['909 Mbits/sec', '911 Mbits/sec']
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 ..
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 5.768 seconds
+mininet@mininet16:~/assignments$ sudo mn --switch ovsk --test iperf
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Waiting for switches to connect
+s1 
+*** Iperf: testing TCP bandwidth between h1 and h2 
+*** Results: ['36.1 Gbits/sec', '36.1 Gbits/sec']
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 10.372 seconds
+mininet@mininet16:~/assignments$ sudo mn --test none
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 0.168 seconds
+mininet@mininet16:~/assignments$ sudo mn --innamespace --switch user
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+c0 <-> s1
+*** Testing control network
+s1 -> c0 
+c0 -> s1 
+*** Results: 0% dropped (2/2 received)
+
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 
+*** Starting CLI:
+mininet> exit
+*** Stopping 1 controllers
+c0 
+*** Stopping 2 links
+..
+*** Stopping 1 switches
+s1 ...
+*** Stopping 2 hosts
+h1 h2 
+*** Done
+completed in 76.296 seconds
+mininet@mininet16:~/assignments$
